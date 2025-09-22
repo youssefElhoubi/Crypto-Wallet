@@ -1,0 +1,31 @@
+package connection;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class database {
+    private static final String URL = "jdbc:mysql://localhost:3306/testdb";
+    private static final String USER = "root";
+    private static final String PASSWORD = "1234";
+    private static Connection Instece = null;
+
+    // Method to get a database connection
+    private static Connection getConnection() {
+        try {
+            // Optional: explicitly load MySQL driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL Driver not found!", e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error connecting to database", e);
+        }
+    }
+    public static Connection getInstence(){
+        if (Instece == null) {
+            Instece =getConnection();
+        }
+        return Instece;
+    }
+}
