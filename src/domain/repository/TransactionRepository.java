@@ -1,9 +1,14 @@
 package domain.repository;
 
 import domain.entities.Transaction;
+import domain.enums.FeeLevel;
+import domain.enums.TransactionStatus;
 import domain.interfaces.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +19,7 @@ public class TransactionRepository extends Repository<Transaction> {
     public void Save(Transaction Object) throws Exception {
         Insert.concat("Transactions  (id, sourceAddress, destinationAddress, amount, feeLevel, transaction_status, creationDate, confirmationDate, cryptoType)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" );
         try(PreparedStatement stm = Instance.prepareStatement(Insert)) {
-            stm.setString(1, Object.getId());
+            stm.setString(1, Object.getId().toString());
             stm.setString(2, Object.getSourceAddress());
             stm.setString(3, Object.getDestinationAddress());
             stm.setDouble(4, Object.getAmount());
@@ -32,16 +37,67 @@ public class TransactionRepository extends Repository<Transaction> {
 
     @Override
     public Transaction FindById(UUID Id) {
+        Select.concat("WHERE ID = ?");
+        try(PreparedStatement stm =Instance.prepareStatement(Select);
+        ) {
+            stm.setString(1, Id.toString());
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+
+            return new Transaction(
+                    UUID.fromString(rs.getString("id")),
+                    rs.getDouble("fee"),
+                    rs.getString("sourceAddress"),
+                    rs.getString("destinationAddress"),
+                    rs.getDouble("amount"),
+                    FeeLevel.valueOf(rs.getString("feeLevel")),            // map enum
+                    TransactionStatus.valueOf(rs.getString("transaction_status")), // map enum
+                    rs.getTimestamp("creationDate") != null ? rs.getTimestamp("creationDate").toLocalDateTime() : null,
+                    rs.getTimestamp("confirmationDate") != null ? rs.getTimestamp("confirmationDate").toLocalDateTime() : null,
+                    rs.getString("cryptoType")
+            );
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching transaction with id " + Id, e);
+        }
         return null;
     }
-
     @Override
     public List<Transaction> FindAll() {
-        return Collections.emptyList();
+        List<Transaction> list = new ArrayList<>();
+        String sql = Select.concat("form Transactions"); // base SELECT statement like: "SELECT * FROM transactions"
+
+        try (PreparedStatement stm = Instance.prepareStatement(sql);
+             ResultSet rs = stm.executeQuery()) {
+
+            while (rs.next()) {
+                Transaction obj = new Transaction();
+                obj.setId(rs.getString("ID"));
+                obj.setSourceAddress(rs.getString("sourceAddress"));
+                obj.setDestinationAddress(rs.getString("destinationAddress"));
+                obj.setAmount(rs.getDouble("amount"));
+                obj.setFee(rs.getDouble("fee"));
+                obj.setFeeLevel(FeeLevel.valueOf(rs.getString("feeLevel"))); // could also use an enum in Java
+                obj.setStatus(TransactionStatus.valueOf(rs.getString("transaction_status"))); // also could be an enum
+                obj.setCreationDate(rs.getTimestamp("creationDate").toLocalDateTime());
+                list.add(obj);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return list;
     }
 
     @Override
     public void Delete(UUID Id) {
-
+        String sql = Delete.concat("transactions WHERE id = ?");
+        try (PreparedStatement stm = Instance.prepareStatement(sql)) {
+            stm.setString(1, Id.toString());
+            stm.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

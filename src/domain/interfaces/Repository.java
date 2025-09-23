@@ -5,7 +5,7 @@ import java.util.UUID;
 import domain.repository.dataBaseConnection;
 
 public abstract class  Repository<T> {
-    protected String Delect = "SELECT * FROM";
+    protected String Select = "SELECT * FROM";
     protected String Delete= "DELETE FROM";
     protected String Update= "UPDATE ";
     protected String Insert= "INSERT INTO ";

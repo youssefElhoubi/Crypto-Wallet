@@ -2,9 +2,10 @@ package domain.entities;
 import domain.enums.FeeLevel;
 import domain.enums.TransactionStatus;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Transaction {
-    private String id;
+    private UUID id;
     private String sourceAddress;
     private String destinationAddress;
     private Double amount;
@@ -12,19 +13,34 @@ public class Transaction {
     private TransactionStatus status;
     private LocalDateTime creationDate;
     private LocalDateTime confirmationDate;
+    private Double fee;
 
-    public Transaction(String id, String sourceAddress, String destinationAddress, Double amount,  FeeLevel feeLevel, TransactionStatus status, LocalDateTime creationDate, LocalDateTime confirmationDate, String cryptoType) {
+
+    public Transaction(UUID id, Double fee, String sourceAddress, String destinationAddress, Double amount, FeeLevel feeLevel, TransactionStatus status, LocalDateTime creationDate, LocalDateTime confirmationDate, String cryptoType) {
         this.id = id;
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.amount = amount;
+        this.fee = fee;
         this.feeLevel = feeLevel;
         this.status = status;
         this.creationDate = creationDate;
         this.confirmationDate = confirmationDate;
         this.cryptoType = cryptoType;
     }
+    public Transaction(){}
 
+    public Double getFee() {
+        return fee;
+    }
+
+    public void setFee(Double fee) {
+        this.fee = fee;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
     public String getCryptoType() {
         return cryptoType;
     }
@@ -33,12 +49,12 @@ public class Transaction {
         this.cryptoType = cryptoType;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = UUID.fromString(id);
     }
 
     public String getSourceAddress() {
