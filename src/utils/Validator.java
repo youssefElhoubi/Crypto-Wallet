@@ -1,7 +1,7 @@
-package UI;
+package utils;
 import java.util.Scanner;
 import java.util.UUID;
-import java.util.HashMap;
+
 public class Validator {
     private static Scanner sc = new Scanner(System.in);
 
