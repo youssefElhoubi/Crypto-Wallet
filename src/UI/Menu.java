@@ -11,30 +11,4 @@ public class Menu {
         System.out.println("0. Exit");
         System.out.print("👉 Enter your choice: ");
     }
-
-    public void handleChoice(int choice) {
-        switch (choice) {
-            case 1:
-                System.out.println("🔐 [Create Wallet selected]");
-                break;
-            case 2:
-                System.out.println("💸 [Create Transaction selected]");
-                break;
-            case 3:
-                System.out.println("📊 [View Position in Mempool selected]");
-                break;
-            case 4:
-                System.out.println("⚖️ [Compare Fee Levels selected]");
-                break;
-            case 5:
-                System.out.println("📜 [View Mempool State selected]");
-                break;
-            case 0:
-                System.out.println("👋 Exiting... Goodbye!");
-                break;
-            default:
-                System.out.println("⚠️ Invalid option. Try again.");
-        }
-    }
-
 }
