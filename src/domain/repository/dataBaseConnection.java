@@ -17,6 +17,7 @@ public class dataBaseConnection {
             Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
             throw new RuntimeException("MySQL Driver not found!", e);
         } catch (SQLException e) {
             throw new RuntimeException("Error connecting to database", e);
