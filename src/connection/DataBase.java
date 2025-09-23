@@ -8,7 +8,7 @@ public class DataBase {
     private static final String URL = "jdbc:mysql://localhost:3306/testdb";
     private static final String USER = "root";
     private static final String PASSWORD = "1234";
-    private static Connection Instece = null;
+    private static Connection Instance = null;
 
     // Method to get a database connection
     private static Connection getConnection() {
@@ -23,9 +23,9 @@ public class DataBase {
         }
     }
     public static Connection getInstence(){
-        if (Instece == null) {
-            Instece =getConnection();
+        if (Instance == null) {
+            Instance =getConnection();
         }
-        return Instece;
+        return Instance;
     }
 }
