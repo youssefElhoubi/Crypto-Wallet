@@ -1,33 +1,29 @@
 package domain.entities;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Wallet {
     private UUID ID;
-    private String address;
     private double balance;
-    private LocalTime createdAt;
-    public Wallet(UUID ID, String address, double balance, LocalTime createdAt) {
+    private String walletType; // Ethereum | Bitcoin
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public Wallet(UUID ID, double balance, String walletType, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.ID = ID;
-        this.address = address;
         this.balance = balance;
+        this.walletType = walletType;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
+
     public UUID getID() {
-        return this.ID;
+        return ID;
     }
 
     public void setID(UUID ID) {
         this.ID = ID;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public double getBalance() {
@@ -38,11 +34,27 @@ public class Wallet {
         this.balance = balance;
     }
 
-    public LocalTime getCreatedAt() {
+    public String getWalletType() {
+        return walletType;
+    }
+
+    public void setWalletType(String walletType) {
+        this.walletType = walletType;
+    }
+
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalTime createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
