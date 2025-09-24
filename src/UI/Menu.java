@@ -24,6 +24,6 @@ public class Menu {
     public static void transferWallet(){
         System.out.println("\n=== Enter wallet address");
     }
-    
+
 
 }
