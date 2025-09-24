@@ -3,7 +3,7 @@ package domain.repository;
 import domain.entities.Transaction;
 import domain.enums.FeeLevel;
 import domain.enums.TransactionStatus;
-import domain.interfaces.Repository;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;

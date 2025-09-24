@@ -1,4 +1,4 @@
-package domain.services;
-public class FeeCalculator {
+package domain.interfaces;
+interface FeeCalculator {
 
 }

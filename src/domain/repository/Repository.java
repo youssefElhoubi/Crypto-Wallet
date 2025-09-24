@@ -1,8 +1,7 @@
-package domain.interfaces;
+package domain.repository;
 import java.sql.Connection;
 import  java.util.List;
 import java.util.UUID;
-import domain.repository.dataBaseConnection;
 
 public abstract class  Repository<T> {
     protected String Select = "SELECT * FROM";
