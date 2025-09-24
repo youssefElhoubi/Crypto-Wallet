@@ -8,23 +8,21 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class walletService {
+public class WalletService {
     private final WalletRepository repo;
     private final Logger log;
 
-    public walletService(WalletRepository repo) {
-        this.repo = repo;
+    public WalletService() {
+        this.repo = new WalletRepository();
         this.log = Floger.makelogger();
     }
 
     // Save wallet
-    public boolean createWallet(Wallet wallet) {
+    public void createWallet(Wallet wallet) {
         try {
             repo.Save(wallet);
-            return true;
         } catch (Exception e) {
             log.warning("Failed to save wallet: " + e.getMessage());
-            return false;
         }
     }
 

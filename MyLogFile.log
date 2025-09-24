@@ -1,0 +1,10 @@
+Sep 24, 2025 2:30:51 PM domain.services.WalletService createWallet
+WARNING: Failed to save wallet: java.sql.SQLException: Parameter index out of range (1 > number of parameters, which is 0).
+Sep 24, 2025 2:32:33 PM domain.services.WalletService createWallet
+WARNING: Failed to save walletzz: java.sql.SQLException: Parameter index out of range (1 > number of parameters, which is 0).
+Sep 24, 2025 2:37:51 PM domain.services.WalletService createWallet
+WARNING: Failed to save wallet: java.sql.SQLException: Parameter index out of range (1 > number of parameters, which is 0).
+Sep 24, 2025 2:41:31 PM domain.services.WalletService createWallet
+WARNING: Failed to save wallet: java.sql.SQLException: Field 'wallet_address' doesn't have a default value
+Sep 24, 2025 2:41:42 PM domain.services.WalletService createWallet
+WARNING: Failed to save wallet: java.sql.SQLException: Field 'wallet_address' doesn't have a default value

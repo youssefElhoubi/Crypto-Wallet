@@ -12,7 +12,7 @@ import java.util.UUID;
 public class WalletRepository extends Repository<Wallet> {
     @Override
     public void Save(Wallet W) throws Exception {
-        Insert.concat("wallet (id, balence, wallet_type, created_at, Updated_at) VALUES (?, ?, ?, ?, ?)");
+        this.Insert+=" wallet (id, balence, wallet_type, created_at, Updated_at,wallet_address) VALUES (?, ?, ?, ?, ?,?)";
 
         try (PreparedStatement stm = Instance.prepareStatement(Insert)) {
             stm.setString(1, W.getID().toString());
@@ -20,6 +20,7 @@ public class WalletRepository extends Repository<Wallet> {
             stm.setString(3, W.getWalletType());
             stm.setObject(4, W.getCreatedAt());
             stm.setObject(5, W.getUpdatedAt());
+            stm.setString(6,W.getWallet_address());
             stm.execute();
         } catch (Exception e) {
             throw new SQLException(e);
@@ -39,7 +40,8 @@ public class WalletRepository extends Repository<Wallet> {
                         rs.getDouble("balence"),
                         rs.getString("wallet_type"),
                         rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null,
-                        rs.getTimestamp("Updated_at") != null ? rs.getTimestamp("Updated_at").toLocalDateTime() : null
+                        rs.getTimestamp("Updated_at") != null ? rs.getTimestamp("Updated_at").toLocalDateTime() : null,
+                        rs.getString("wallet_address")
                 );
             }
         } catch (Exception e) {
@@ -62,7 +64,8 @@ public class WalletRepository extends Repository<Wallet> {
                         rs.getDouble("balence"),
                         rs.getString("wallet_type"),
                         rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null,
-                        rs.getTimestamp("Updated_at") != null ? rs.getTimestamp("Updated_at").toLocalDateTime() : null
+                        rs.getTimestamp("Updated_at") != null ? rs.getTimestamp("Updated_at").toLocalDateTime() : null,
+                        rs.getString("wallet_address")
                 );
                 list.add(wallet);
             }

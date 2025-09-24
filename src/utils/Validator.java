@@ -56,12 +56,13 @@ public class Validator {
         }
     }
 
-    public static boolean isValidUuid(String uuidString) {
+    public static UUID isValidUuid() {
         try {
-            UUID.fromString(uuidString);
-            return true;
+            String id = sc.nextLine();
+            return UUID.fromString(id);
+
         } catch (IllegalArgumentException e) {
-            return false;
+            throw new RuntimeException("UUID form is not accepted");
         }
     }
 

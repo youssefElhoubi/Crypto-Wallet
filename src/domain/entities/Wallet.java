@@ -9,13 +9,15 @@ public class Wallet {
     private String walletType; // Ethereum | Bitcoin
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String wallet_address;
 
-    public Wallet(UUID ID, double balance, String walletType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Wallet(UUID ID, double balance, String walletType, LocalDateTime createdAt, LocalDateTime updatedAt ,String wallet_address) {
         this.ID = ID;
         this.balance = balance;
         this.walletType = walletType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.wallet_address = wallet_address;
     }
 
     public UUID getID() {
@@ -56,5 +58,13 @@ public class Wallet {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getWallet_address() {
+        return wallet_address;
+    }
+
+    public void setWallet_address(String wallet_address) {
+        this.wallet_address = wallet_address;
     }
 }
