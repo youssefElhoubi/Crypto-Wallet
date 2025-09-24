@@ -10,20 +10,16 @@ import java.util.List;
 import java.util.UUID;
 
 public class WalletRepository extends Repository<Wallet> {
-    private Wallet wallet;
-    public WalletRepository(Wallet wallet) {
-        this.wallet = wallet;
-    }
     @Override
-    public void Save() throws Exception {
+    public void Save(Wallet W) throws Exception {
         Insert.concat("wallet (id, balence, wallet_type, created_at, Updated_at) VALUES (?, ?, ?, ?, ?)");
 
         try (PreparedStatement stm = Instance.prepareStatement(Insert)) {
-            stm.setString(1, this.wallet.getID().toString());
-            stm.setDouble(2, this.wallet.getBalance());
-            stm.setString(3, this.wallet.getWalletType());
-            stm.setObject(4, this.wallet.getCreatedAt());
-            stm.setObject(5, this.wallet.getUpdatedAt());
+            stm.setString(1, W.getID().toString());
+            stm.setDouble(2, W.getBalance());
+            stm.setString(3, W.getWalletType());
+            stm.setObject(4, W.getCreatedAt());
+            stm.setObject(5, W.getUpdatedAt());
             stm.execute();
         } catch (Exception e) {
             throw new SQLException(e);

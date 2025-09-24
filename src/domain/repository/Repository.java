@@ -10,7 +10,7 @@ public abstract class  Repository<T> {
     protected String Insert= "INSERT INTO ";
     protected final Connection Instance = dataBaseConnection.getInstence();
 
-    public abstract void Save()throws Exception ;
+    public abstract void Save(T t)throws Exception ;
     public abstract T FindById(UUID Id);
     public abstract List<T> FindAll();
     public abstract void Delete(UUID Id);

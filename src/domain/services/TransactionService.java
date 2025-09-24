@@ -18,7 +18,7 @@ public class TransactionService {
 
     public void makeTransaction(Transaction t){
         try {
-            repo.Save();
+            repo.Save(t);
         }catch(Exception e){
             log.warning(e.getMessage());
         }

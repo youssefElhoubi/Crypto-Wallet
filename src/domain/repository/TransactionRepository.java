@@ -12,23 +12,19 @@ import java.util.List;
 import java.util.UUID;
 
 public class TransactionRepository extends Repository<Transaction> {
-    private Transaction Transaction ;
-    public TransactionRepository(Transaction t) {
-        this.Transaction = t;
-    }
     @Override
-    public void Save() throws Exception {
+    public void Save(Transaction T) throws Exception {
         Insert.concat("Transactions  (id, sourceAddress, destinationAddress, amount, feeLevel, transaction_status, creationDate, confirmationDate, cryptoType)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" );
         try(PreparedStatement stm = Instance.prepareStatement(Insert)) {
-            stm.setString(1, this.Transaction.getId().toString());
-            stm.setString(2, this.Transaction.getSourceAddress());
-            stm.setString(3, this.Transaction.getDestinationAddress());
-            stm.setDouble(4, this.Transaction.getAmount());
-            stm.setString(5, this.Transaction.getFeeLevel().name());  // store enum as text
-            stm.setString(6, this.Transaction.getStatus().name());    // store enum as text
-            stm.setObject(7, this.Transaction.getCreationDate());     // works with MySQL 8+ and JDBC 4.2
-            stm.setObject(8, this.Transaction.getConfirmationDate());
-            stm.setString(9, this.Transaction.getCryptoType());
+            stm.setString(1,T.getId().toString());
+            stm.setString(2,T.getSourceAddress());
+            stm.setString(3,T.getDestinationAddress());
+            stm.setDouble(4,T.getAmount());
+            stm.setString(5,T.getFeeLevel().name());  // store enum as text
+            stm.setString(6,T.getStatus().name());    // store enum as text
+            stm.setObject(7,T.getCreationDate());     // works with MySQL 8+ and JDBC 4.2
+            stm.setObject(8,T.getConfirmationDate());
+            stm.setString(9,T.getCryptoType());
             stm.execute();
         }catch (Exception e){
             throw new SQLException(e);
