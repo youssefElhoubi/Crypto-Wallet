@@ -35,6 +35,15 @@ public class WalletService {
             return null;
         }
     }
+    public Wallet getWalletByAddress(String address) {
+        try{
+            return repo.getWalletByAddress(address);
+        }
+        catch (Exception e){
+            log.warning("Failed to fetch wallet by address " + address + ": " + e.getMessage());
+            return null;
+        }
+    }
 
     // Find all wallets
     public List<Wallet> getAllWallets() {

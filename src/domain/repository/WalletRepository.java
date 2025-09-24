@@ -99,6 +99,26 @@ public class WalletRepository extends Repository<Wallet> {
         } catch (Exception e) {
             throw new RuntimeException("Error updating wallet with id " + wallet.getID(), e);
         }
+
+    }
+    public Wallet getWalletByAddress(String address) {
+        try {
+            String sql = Select += ("WHERE wallet_address = ?");
+            PreparedStatement stm = Instance.prepareStatement(sql);
+            stm.setString(1, address);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return new Wallet(UUID.fromString(rs.getString("id")),
+                        rs.getDouble("balence"),
+                        rs.getString("wallet_type"),
+                        rs.getTimestamp("created_at") != null ? rs.getTimestamp("created_at").toLocalDateTime() : null,
+                        rs.getTimestamp("Updated_at") != null ? rs.getTimestamp("Updated_at").toLocalDateTime() : null,
+                        rs.getString("wallet_address"));
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e);
+
+        }
     }
 
 }
