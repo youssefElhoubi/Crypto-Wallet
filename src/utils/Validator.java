@@ -83,5 +83,8 @@ public class Validator {
             }
         }
     }
+    public static void validateWalletAddress(String walletAddress){
+
+    }
 
 }
