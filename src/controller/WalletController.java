@@ -8,8 +8,8 @@ import utils.generator;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class walletController {
-    public void handelWalletCreation(int choice){
+public class WalletController {
+    public static void handelWalletCreation(int choice){
         switch (choice) {
             case 1:
                 try{
