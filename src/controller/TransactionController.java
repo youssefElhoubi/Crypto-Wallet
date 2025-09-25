@@ -1,6 +1,9 @@
 package controller;
 
+import domain.entities.Transaction;
 import domain.entities.Wallet;
+import domain.repository.TransactionRepository;
+import domain.services.TransactionService;
 import domain.services.WalletService;
 import utils.Floger;
 import utils.WalletValidator;
@@ -17,8 +20,13 @@ public class TransactionController {
         try {
             String sender = sc.nextLine();
             String receiver = sc.nextLine();
+            TransactionService transaction = new TransactionService(new TransactionRepository());
             if(WalletValidator.isValidBitcoinAddress(sender) && WalletValidator.isValidBitcoinAddress(receiver)){
-//                Wallet reseverWallet = walletService.getWalletById();
+                Wallet senderWallet = walletService.getWalletByAddress(sender);
+                Wallet reserverWallet = walletService.getWalletByAddress(receiver);
+                Transaction T = new  Transaction();
+
+
             } else if (WalletValidator.isValidEthereumAddress( sender ) && WalletValidator.isValidEthereumAddress(receiver)) {
 
             }

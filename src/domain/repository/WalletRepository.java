@@ -119,6 +119,7 @@ public class WalletRepository extends Repository<Wallet> {
             throw new RuntimeException(e);
 
         }
+        return null;
     }
 
 }
