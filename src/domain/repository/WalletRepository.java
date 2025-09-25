@@ -29,8 +29,8 @@ public class WalletRepository extends Repository<Wallet> {
 
     @Override
     public Wallet FindById(UUID Id) {
-        Select.concat("WHERE id = ?");
-        try (PreparedStatement stm = Instance.prepareStatement(Select)) {
+        String sql =Select + " WHERE id = ?";
+        try (PreparedStatement stm = Instance.prepareStatement(sql)) {
             stm.setString(1, Id.toString());
             ResultSet rs = stm.executeQuery();
 
@@ -53,7 +53,7 @@ public class WalletRepository extends Repository<Wallet> {
     @Override
     public List<Wallet> FindAll() {
         List<Wallet> list = new ArrayList<>();
-        String sql = Select.concat("FROM wallet");
+        String sql = Select+"FROM wallet";
 
         try (PreparedStatement stm = Instance.prepareStatement(sql);
              ResultSet rs = stm.executeQuery()) {
@@ -77,7 +77,7 @@ public class WalletRepository extends Repository<Wallet> {
 
     @Override
     public void Delete(UUID Id) {
-        String sql = Delete.concat("wallet WHERE id = ?");
+        String sql = Delete + " wallet WHERE id = ?";
         try (PreparedStatement stm = Instance.prepareStatement(sql)) {
             stm.setString(1, Id.toString());
             stm.executeUpdate();
@@ -103,7 +103,7 @@ public class WalletRepository extends Repository<Wallet> {
     }
     public Wallet getWalletByAddress(String address) {
         try {
-            String sql = Select += ("WHERE wallet_address = ?");
+            String sql = Select + " wallet WHERE wallet_address = ?";
             PreparedStatement stm = Instance.prepareStatement(sql);
             stm.setString(1, address);
             ResultSet rs = stm.executeQuery();

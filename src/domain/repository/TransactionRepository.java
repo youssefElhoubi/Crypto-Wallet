@@ -14,8 +14,8 @@ import java.util.UUID;
 public class TransactionRepository extends Repository<Transaction> {
     @Override
     public void Save(Transaction T) throws Exception {
-        Insert.concat("Transactions  (id, sourceAddress, destinationAddress, amount, feeLevel, transaction_status, creationDate, confirmationDate, cryptoType)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)" );
-        try(PreparedStatement stm = Instance.prepareStatement(Insert)) {
+        String sql =  Insert + " Transactions  (id, sourceAddress, destinationAddress, amount, feeLevel, transaction_status, creationDate, confirmationDate, cryptoType ,fee)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)" ;
+        try(PreparedStatement stm = Instance.prepareStatement(sql)) {
             stm.setString(1,T.getId().toString());
             stm.setString(2,T.getSourceAddress());
             stm.setString(3,T.getDestinationAddress());
@@ -25,6 +25,7 @@ public class TransactionRepository extends Repository<Transaction> {
             stm.setObject(7,T.getCreationDate());     // works with MySQL 8+ and JDBC 4.2
             stm.setObject(8,T.getConfirmationDate());
             stm.setString(9,T.getCryptoType());
+            stm.setObject(10,T.getFee());
             stm.execute();
         }catch (Exception e){
             throw new SQLException(e);
@@ -34,8 +35,8 @@ public class TransactionRepository extends Repository<Transaction> {
 
     @Override
     public Transaction FindById(UUID Id) {
-        Select.concat("WHERE ID = ?");
-        try(PreparedStatement stm =Instance.prepareStatement(Select);
+        String sql = Select+" WHERE ID = ?";
+        try(PreparedStatement stm =Instance.prepareStatement(sql);
         ) {
             stm.setString(1, Id.toString());
             ResultSet rs = stm.executeQuery();
@@ -62,7 +63,7 @@ public class TransactionRepository extends Repository<Transaction> {
     @Override
     public List<Transaction> FindAll() {
         List<Transaction> list = new ArrayList<>();
-        String sql = Select.concat("form Transactions"); // base SELECT statement like: "SELECT * FROM transactions"
+        String sql = Select + " form Transactions"; // base SELECT statement like: "SELECT * FROM transactions"
 
         try (PreparedStatement stm = Instance.prepareStatement(sql);
              ResultSet rs = stm.executeQuery()) {
@@ -89,7 +90,7 @@ public class TransactionRepository extends Repository<Transaction> {
 
     @Override
     public void Delete(UUID Id) {
-        String sql = Delete.concat("transactions WHERE id = ?");
+        String sql = Delete+ " transactions WHERE id = ?";
         try (PreparedStatement stm = Instance.prepareStatement(sql)) {
             stm.setString(1, Id.toString());
             stm.executeUpdate();

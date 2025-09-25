@@ -20,20 +20,23 @@ public class TransactionController {
     private static Scanner sc = new Scanner(System.in);
     public static void handleTransactionCreation(){
         try {
+            System.out.println("please enter sender wallet address:");
             String sender = sc.nextLine();
+            System.out.println("please enter receiver wallet address:");
             String receiver = sc.nextLine();
             TransactionService transaction = new TransactionService(new TransactionRepository());
             if(WalletValidator.isValidBitcoinAddress(sender) && WalletValidator.isValidBitcoinAddress(receiver)){
                 Wallet senderWallet = walletService.getWalletByAddress(sender);
                 Wallet reserverWallet = walletService.getWalletByAddress(receiver);
-                Transaction t =   Menu.createTransactionFromUserInput(CryptoType.Bitcoin, senderWallet.getWallet_address() , reserverWallet.getWallet_address());
+                Transaction t = Menu.createTransactionFromUserInput(CryptoType.Bitcoin, senderWallet.getWallet_address() , reserverWallet.getWallet_address());
                 transaction.makeTransaction(t);
             } else if (WalletValidator.isValidEthereumAddress( sender ) && WalletValidator.isValidEthereumAddress(receiver)) {
                 Wallet senderWallet = walletService.getWalletByAddress(sender);
                 Wallet reserverWallet = walletService.getWalletByAddress(receiver);
-                Transaction t =   Menu.createTransactionFromUserInput(CryptoType.Bitcoin, senderWallet.getWallet_address() , reserverWallet.getWallet_address());
+                Transaction t = Menu.createTransactionFromUserInput(CryptoType.Bitcoin, senderWallet.getWallet_address() , reserverWallet.getWallet_address());
                 transaction.makeTransaction(t);
             }
+            System.out.println("your transaction have been created successfully");
         }catch(Exception e){
             log.warning("Failed to handle transaction creation"+e.getMessage());
         }

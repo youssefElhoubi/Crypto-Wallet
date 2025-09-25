@@ -1,4 +1,5 @@
 import UI.Menu;
+import controller.TransactionController;
 import controller.WalletController;
 import utils.Validator;
 
@@ -17,6 +18,7 @@ public class Main {
                     WalletController.handelWalletCreation(choice);
                     break;
                 case 2:
+                    TransactionController.handleTransactionCreation();
 
                     break;
                 case 3:

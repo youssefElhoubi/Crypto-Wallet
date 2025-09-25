@@ -47,7 +47,6 @@ public class Menu {
         UUID id = UUID.randomUUID(); // auto-generated
 
         // Crypto type
-        System.out.println("Select crypto type: 1. Bitcoin  2. Ethereum");
         String cryptoType = CT.toString();
 
         String sourceAddress = sender ;
@@ -55,6 +54,7 @@ public class Menu {
         String destinationAddress = resever;
 
         // Amount
+        System.out.println("please enter the amount you want to transfer");
         double amount = Validator.askPositiveDouble("");
 
         // Fee Level
@@ -76,26 +76,12 @@ public class Menu {
                 break;
         }
 
-        sc.nextLine(); // clear buffer
 
         // Status
         System.out.println("Select transaction status: 1. PENDING  2. CONFIRMED  3. FAILED");
-        int statusChoice = Validator.isBetween(1, 3);
-        TransactionStatus status;
-        switch (statusChoice) {
-            case 1:
-                status = TransactionStatus.PENDING;
-                break;
-            case 2:
-                status = TransactionStatus.CONFIRMED;
-                break;
-            case 3:
-                status = TransactionStatus.REJECTED;
-                break;
-            default:
-                status = TransactionStatus.PENDING;
-                break;
-        }
+
+        TransactionStatus status =  TransactionStatus.PENDING;
+
         double fee = FeeCalculator.calculateFee( amount, feeLevel );
 
         // Dates

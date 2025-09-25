@@ -25,7 +25,7 @@ public class WalletController {
             case 2:
                 try{
                     UUID id = UUID.randomUUID();
-                    Wallet wallet = new Wallet(id,0, CryptoType.Ethereum.toString(), LocalDateTime.now(),LocalDateTime.now(), generator.generateBitcoinAddress());
+                    Wallet wallet = new Wallet(id,0, CryptoType.Ethereum.toString(), LocalDateTime.now(),LocalDateTime.now(), generator.generateEthereumAddress());
                     WalletService ws = new WalletService();
                     ws.createWallet(wallet);
                     System.out.println("✅ Wallet created:" + wallet.getWallet_address());
