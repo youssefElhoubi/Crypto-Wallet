@@ -1,7 +1,9 @@
 package controller;
 
+import UI.Menu;
 import domain.entities.Transaction;
 import domain.entities.Wallet;
+import domain.enums.CryptoType;
 import domain.repository.TransactionRepository;
 import domain.services.TransactionService;
 import domain.services.WalletService;
@@ -24,11 +26,13 @@ public class TransactionController {
             if(WalletValidator.isValidBitcoinAddress(sender) && WalletValidator.isValidBitcoinAddress(receiver)){
                 Wallet senderWallet = walletService.getWalletByAddress(sender);
                 Wallet reserverWallet = walletService.getWalletByAddress(receiver);
-                Transaction T = new  Transaction();
-
-
+                Transaction t =   Menu.createTransactionFromUserInput(CryptoType.Bitcoin, senderWallet.getWallet_address() , reserverWallet.getWallet_address());
+                transaction.makeTransaction(t);
             } else if (WalletValidator.isValidEthereumAddress( sender ) && WalletValidator.isValidEthereumAddress(receiver)) {
-
+                Wallet senderWallet = walletService.getWalletByAddress(sender);
+                Wallet reserverWallet = walletService.getWalletByAddress(receiver);
+                Transaction t =   Menu.createTransactionFromUserInput(CryptoType.Bitcoin, senderWallet.getWallet_address() , reserverWallet.getWallet_address());
+                transaction.makeTransaction(t);
             }
         }catch(Exception e){
             log.warning("Failed to handle transaction creation"+e.getMessage());

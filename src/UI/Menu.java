@@ -4,6 +4,7 @@ import domain.entities.Transaction;
 import domain.enums.CryptoType;
 import domain.enums.FeeLevel;
 import domain.enums.TransactionStatus;
+import domain.services.FeeCalculator;
 import utils.Validator;
 
 import java.time.LocalDateTime;
@@ -36,42 +37,25 @@ public class Menu {
         System.out.println("3. Ethereum");
     }
 
-    public static void transferWallet() {
+    public static void transferWallet(   ) {
         System.out.println("\n=== Enter wallet address");
     }
 
-    public static Transaction createTransactionFromUserInput() {
+    public static Transaction createTransactionFromUserInput(CryptoType CT, String sender ,String resever  ) {
         System.out.println("=== Create New Transaction ===");
 
         UUID id = UUID.randomUUID(); // auto-generated
 
         // Crypto type
         System.out.println("Select crypto type: 1. Bitcoin  2. Ethereum");
-        int cryptoChoice = Validator.isBetween(1, 2);
-        String cryptoType = (cryptoChoice == 1) ? CryptoType.Bitcoin.toString() : CryptoType.Ethereum.toString();
+        String cryptoType = CT.toString();
 
-        // Source Address
-        System.out.print("Enter source address: ");
-        String sourceAddress = sc.nextLine();
+        String sourceAddress = sender ;
 
-        // Destination Address
-        System.out.print("Enter destination address: ");
-        String destinationAddress = sc.nextLine();
+        String destinationAddress = resever;
 
         // Amount
-        double amount = -1;
-        while (amount <= 0) {
-            System.out.print("Enter amount: ");
-            if (sc.hasNextDouble()) {
-                amount = sc.nextDouble();
-                if (amount <= 0) {
-                    System.out.println("⚠️ Amount must be greater than 0.");
-                }
-            } else {
-                System.out.println("⚠️ Invalid input. Enter a number.");
-                sc.next(); // discard
-            }
-        }
+        double amount = Validator.askPositiveDouble("");
 
         // Fee Level
         System.out.println("Select fee level: 1. ECONOMIC  2. STANDARD  3. RAPID");
@@ -90,18 +74,6 @@ public class Menu {
             default:
                 feeLevel = FeeLevel.STANDARD;
                 break;
-        } ;
-
-        // Fee (user can provide manually)
-        double fee = -1;
-        while (fee < 0) {
-            System.out.print("Enter fee: ");
-            if (sc.hasNextDouble()) {
-                fee = sc.nextDouble();
-            } else {
-                System.out.println("⚠️ Invalid input. Enter a number.");
-                sc.next();
-            }
         }
 
         sc.nextLine(); // clear buffer
@@ -124,7 +96,7 @@ public class Menu {
                 status = TransactionStatus.PENDING;
                 break;
         }
-        ;
+        double fee = FeeCalculator.calculateFee( amount, feeLevel );
 
         // Dates
         LocalDateTime creationDate = LocalDateTime.now();

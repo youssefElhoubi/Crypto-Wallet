@@ -11,8 +11,7 @@ public class FeeCalculator {
     public static float feePersentage;
     public static double feeAmount;
 
-    public static Transaction calculateFee(Transaction t) {
-        FeeLevel feeLevel = t.getFeeLevel();
+    public static double calculateFee( double amount , FeeLevel feeLevel) {;
         switch (feeLevel) {
             case ECONOMIQUE:
                 feePersentage = 5;
@@ -24,11 +23,11 @@ public class FeeCalculator {
                 feePersentage = 3;
                 break;
         }
-        feeAmount = t.getAmount() * feePersentage / 100;
+        feeAmount = amount * feePersentage / 100;
 
-        t.setFee(feeAmount);
 
-        return t;
+
+        return feeAmount;
     }
 
 }
