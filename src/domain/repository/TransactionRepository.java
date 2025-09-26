@@ -14,7 +14,7 @@ import java.util.UUID;
 public class TransactionRepository extends Repository<Transaction> {
     @Override
     public void Save(Transaction T) throws Exception {
-        String sql =  Insert + " Transactions  (id, sourceAddress, destinationAddress, amount, feeLevel, transaction_status, creationDate, confirmationDate, cryptoType ,fee)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)" ;
+        String sql =  Insert + " Transactions  (id, sourceAddress, destinationAddress, amount, feeLevel, transaction_status, creationDate, confirmationDate, cryptoType ,fee,passTime)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)" ;
         try(PreparedStatement stm = Instance.prepareStatement(sql)) {
             stm.setString(1,T.getId().toString());
             stm.setString(2,T.getSourceAddress());
@@ -25,7 +25,8 @@ public class TransactionRepository extends Repository<Transaction> {
             stm.setObject(7,T.getCreationDate());     // works with MySQL 8+ and JDBC 4.2
             stm.setObject(8,T.getConfirmationDate());
             stm.setString(9,T.getCryptoType());
-            stm.setObject(10,T.getFee());
+            stm.setDouble(10,T.getFee());
+            stm.setObject(11,T.getPassTime());
             stm.execute();
         }catch (Exception e){
             throw new SQLException(e);
@@ -52,7 +53,8 @@ public class TransactionRepository extends Repository<Transaction> {
                     TransactionStatus.valueOf(rs.getString("transaction_status")), // map enum
                     rs.getTimestamp("creationDate") != null ? rs.getTimestamp("creationDate").toLocalDateTime() : null,
                     rs.getTimestamp("confirmationDate") != null ? rs.getTimestamp("confirmationDate").toLocalDateTime() : null,
-                    rs.getString("cryptoType")
+                    rs.getString("cryptoType"),
+                    rs.getTimestamp("creationDate") != null ? rs.getTimestamp("creationDate").toLocalDateTime() : null
             );
             }
         } catch (Exception e) {

@@ -1,6 +1,8 @@
 package domain.entities;
+
 import domain.enums.FeeLevel;
 import domain.enums.TransactionStatus;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -14,9 +16,10 @@ public class Transaction {
     private LocalDateTime creationDate;
     private LocalDateTime confirmationDate;
     private Double fee;
+    private LocalDateTime passTime;
 
 
-    public Transaction(UUID id, Double fee, String sourceAddress, String destinationAddress, Double amount, FeeLevel feeLevel, TransactionStatus status, LocalDateTime creationDate, LocalDateTime confirmationDate, String cryptoType) {
+    public Transaction(UUID id, Double fee, String sourceAddress, String destinationAddress, Double amount, FeeLevel feeLevel, TransactionStatus status, LocalDateTime creationDate, LocalDateTime confirmationDate, String cryptoType, LocalDateTime passTime) {
         this.id = id;
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
@@ -27,11 +30,25 @@ public class Transaction {
         this.creationDate = creationDate;
         this.confirmationDate = confirmationDate;
         this.cryptoType = cryptoType;
+        this.passTime = passTime;
     }
-    public Transaction(){}
+
+    public Transaction() {
+    }
+
+    public Transaction(UUID id, double fee, String sourceAddress, String destinationAddress, double amount, FeeLevel feeLevel, TransactionStatus transactionStatus, LocalDateTime localDateTime, LocalDateTime localDateTime1, String cryptoType, LocalDateTime localDateTime2, Object o) {
+    }
 
     public Double getFee() {
         return fee;
+    }
+
+    public LocalDateTime getPassTime() {
+        return passTime;
+    }
+
+    public void setPassTime(LocalDateTime passTime) {
+        this.passTime = passTime;
     }
 
     public void setFee(Double fee) {
@@ -41,6 +58,7 @@ public class Transaction {
     public void setId(UUID id) {
         this.id = id;
     }
+
     public String getCryptoType() {
         return cryptoType;
     }
@@ -114,5 +132,5 @@ public class Transaction {
     }
 
     private String cryptoType;
-    
+
 }

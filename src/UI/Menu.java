@@ -37,11 +37,11 @@ public class Menu {
         System.out.println("3. Ethereum");
     }
 
-    public static void transferWallet(   ) {
+    public static void transferWallet() {
         System.out.println("\n=== Enter wallet address");
     }
 
-    public static Transaction createTransactionFromUserInput(CryptoType CT, String sender ,String resever  ) {
+    public static Transaction createTransactionFromUserInput(CryptoType CT, String sender, String resever) {
         System.out.println("=== Create New Transaction ===");
 
         UUID id = UUID.randomUUID(); // auto-generated
@@ -49,7 +49,7 @@ public class Menu {
         // Crypto type
         String cryptoType = CT.toString();
 
-        String sourceAddress = sender ;
+        String sourceAddress = sender;
 
         String destinationAddress = resever;
 
@@ -80,16 +80,27 @@ public class Menu {
         // Status
         System.out.println("Select transaction status: 1. PENDING  2. CONFIRMED  3. FAILED");
 
-        TransactionStatus status =  TransactionStatus.PENDING;
+        TransactionStatus status = TransactionStatus.PENDING;
 
-        double fee = FeeCalculator.calculateFee( amount, feeLevel );
+        double fee = FeeCalculator.calculateFee(amount, feeLevel);
 
         // Dates
         LocalDateTime creationDate = LocalDateTime.now();
         LocalDateTime confirmationDate = (status == TransactionStatus.CONFIRMED) ? LocalDateTime.now() : null;
-
+        LocalDateTime passTime = LocalDateTime.now();
+        switch (feeLevel) {
+            case ECONOMIQUE:
+                passTime.plusMinutes(5);
+                break;
+            case STANDARD:
+                passTime.plusMinutes(2);
+                break;
+            case RAPIDE:
+                passTime.plusMinutes(1);
+                break;
+        }
         // Build Transaction
-        return new Transaction(id, fee, sourceAddress, destinationAddress, amount, feeLevel, status, creationDate, confirmationDate, cryptoType);
+        return new Transaction(id, fee, sourceAddress, destinationAddress, amount, feeLevel, status, creationDate, confirmationDate, cryptoType, passTime);
     }
 
 
