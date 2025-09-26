@@ -7,50 +7,76 @@ import domain.repository.TransactionRepository;
 import domain.repository.WalletRepository;
 import utils.Floger;
 import utils.ValidateTransacsion;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class MempoolService extends Thread {
-    private Logger log ;
+    private Logger log;
     private TransactionRepository transactionRepo;
     private WalletRepository walletRepo;
     private Transaction firstTransaction;
-    public MempoolService(){
+
+    public MempoolService() {
         this.log = Floger.makelogger();
         this.transactionRepo = new TransactionRepository();
-        this.walletRepo= new WalletRepository();
+        this.walletRepo = new WalletRepository();
     }
+
     @Override
-    public void run(){
-        while(true){
-            try{
-                List<Transaction> transacsions;
-                transacsions = transactionRepo.watingTransactions();
-                this.firstTransaction = transacsions.get(0);
+    public void run() {
+        while (true) {
+            try {
+                List<Transaction> transactions = transactionRepo.watingTransactions();
+
+                if (transactions.isEmpty()) {
+                    Thread.sleep(1000);
+                    continue;
+                }
+
+                this.firstTransaction = transactions.get(0);
+
                 ValidateTransacsion.validateTransacsion(firstTransaction);
+
                 Wallet senderWallet = this.walletRepo.getWalletByAddress(firstTransaction.getSourceAddress());
-                Wallet reseverWallet = this.walletRepo.getWalletByAddress(firstTransaction.getDestinationAddress());
-                senderWallet.setBalance( senderWallet.getBalance() - firstTransaction.getFee());
-                reseverWallet.setBalance( reseverWallet.getBalance() + firstTransaction.getFee());
-                this.walletRepo.Update(reseverWallet);
+                Wallet receiverWallet = this.walletRepo.getWalletByAddress(firstTransaction.getDestinationAddress());
+
+                senderWallet.setBalance(senderWallet.getBalance() - firstTransaction.getFee());
+                receiverWallet.setBalance(receiverWallet.getBalance() + firstTransaction.getFee());
+
+                this.walletRepo.Update(receiverWallet);
                 this.walletRepo.Update(senderWallet);
+
                 firstTransaction.setStatus(TransactionStatus.CONFIRMED);
                 transactionRepo.Update(firstTransaction);
-            }catch(Exception e){
-                this.firstTransaction.setStatus(TransactionStatus.REJECTED);
-                throw new  RuntimeException("transaction balance is not enough");
+
+                Thread.sleep(1000);
+
+            } catch (Exception e) {
+                if (this.firstTransaction != null) {
+                    this.firstTransaction.setStatus(TransactionStatus.REJECTED);
+                    transactionRepo.Update(this.firstTransaction);
+                }
+                // instead of throwing -> just sleep & continue
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {
+                }
+                continue;
             }
         }
     }
-    public List<Transaction> mempoolList(){
-        try{
+
+    public List<Transaction> mempoolList() {
+        try {
             List<Transaction> transacsions;
             transacsions = transactionRepo.watingTransactions();
             return transacsions;
-        }catch(Exception e){
+        } catch (Exception e) {
             this.firstTransaction.setStatus(TransactionStatus.REJECTED);
             log.warning(e.getMessage());
-            throw new  RuntimeException("transaction balance is not enough");
+            throw new RuntimeException("transaction balance is not enough");
         }
     }
 }

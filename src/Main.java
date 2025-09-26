@@ -1,6 +1,8 @@
 import UI.Menu;
 import controller.TransactionController;
 import controller.WalletController;
+import domain.entities.Mempool;
+import domain.services.MempoolService;
 import utils.Validator;
 
 import java.util.Scanner;
@@ -10,6 +12,8 @@ public class Main {
     public static void main(String[] args) {
         int choice;
         Scanner sc = new Scanner(System.in);
+        Thread mempoolThread = new Thread(new MempoolService());
+        mempoolThread.start();
         System.out.println("Welcome to Crypto-Wallet");
         while (true) {
             Menu.mainMenu();

@@ -123,7 +123,7 @@ public class TransactionRepository extends Repository<Transaction> {
 
     public List<Transaction> watingTransactions(){
         List<Transaction> list = new ArrayList<>();
-        String sql = Select + " from ROM Transactions WHERE transaction_status = 'PENDING' ORDER BY feeLevel, passTime;";
+        String sql = Select + "   Transactions WHERE transaction_status = 'PENDING' ORDER BY feeLevel, passTime;";
         try(PreparedStatement stm = Instance.prepareStatement(sql)){
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {

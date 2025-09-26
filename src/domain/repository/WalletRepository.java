@@ -53,7 +53,7 @@ public class WalletRepository extends Repository<Wallet> {
     @Override
     public List<Wallet> FindAll() {
         List<Wallet> list = new ArrayList<>();
-        String sql = Select+"FROM wallet";
+        String sql = Select+" FROM wallet";
 
         try (PreparedStatement stm = Instance.prepareStatement(sql);
              ResultSet rs = stm.executeQuery()) {
