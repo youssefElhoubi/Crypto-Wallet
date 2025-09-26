@@ -5,9 +5,11 @@ import domain.enums.CryptoType;
 import domain.enums.FeeLevel;
 import domain.enums.TransactionStatus;
 import domain.services.FeeCalculator;
+import domain.services.MempoolService;
 import utils.Validator;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -103,5 +105,31 @@ public class Menu {
         return new Transaction(id, fee, sourceAddress, destinationAddress, amount, feeLevel, status, creationDate, confirmationDate, cryptoType, passTime);
     }
 
+    public static void placeInMempool(String walletAddress) {
+        List<Transaction> pendingTransactions = new MempoolService().mempoolList();
 
+        String top = "┌──────────────────────────────────┬────────┐";
+        String header = "│ Transaction (autres utilisateurs) │ Frais  │";
+        String separator = "├──────────────────────────────────┼────────┤";
+        String bottom = "└──────────────────────────────────┴────────┘";
+
+        System.out.println(top);
+        System.out.println(header);
+        System.out.println(separator);
+        for (Transaction tx : pendingTransactions) {
+            String address = tx.getSourceAddress();
+            String shortAddr = address.length() > 8 ? address.substring(0, 8) + "..." : address;
+
+            String label;
+            if (tx.getId().toString().equals(walletAddress)) {
+                label = ">>> VOTRE TX: " + shortAddr;
+            } else {
+                label = shortAddr + " (anonyme)";
+            }
+
+            System.out.printf("│ %-32s │ %6.2f$ │%n", label, tx.getFee());
+        }
+
+        System.out.println(bottom);
+    }
 }

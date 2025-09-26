@@ -3,10 +3,13 @@ import controller.TransactionController;
 import controller.WalletController;
 import utils.Validator;
 
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
         int choice;
+        Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to Crypto-Wallet");
         while (true) {
             Menu.mainMenu();
@@ -22,6 +25,8 @@ public class Main {
 
                     break;
                 case 3:
+                    System.out.println("please enter your wallet address:");
+                    String address  = sc.nextLine() ;
                     break;
                 case 4:
                     break;
