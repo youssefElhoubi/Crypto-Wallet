@@ -121,4 +121,29 @@ public class TransactionRepository extends Repository<Transaction> {
         }
     }
 
+    public List<Transaction> watingTransactions(){
+        List<Transaction> list = new ArrayList<>();
+        String sql = Select + " from ROM Transactions WHERE transaction_status = 'PENDING' ORDER BY feeLevel, passTime;";
+        try(PreparedStatement stm = Instance.prepareStatement(sql)){
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Transaction obj = new Transaction();
+                obj.setId(rs.getString("ID"));
+                obj.setSourceAddress(rs.getString("sourceAddress"));
+                obj.setDestinationAddress(rs.getString("destinationAddress"));
+                obj.setAmount(rs.getDouble("amount"));
+                obj.setFee(rs.getDouble("fee"));
+                obj.setFeeLevel(FeeLevel.valueOf(rs.getString("feeLevel")));
+                obj.setStatus(TransactionStatus.valueOf(rs.getString("transaction_status")));
+                obj.setCreationDate(rs.getTimestamp("creationDate").toLocalDateTime());
+                obj.setConfirmationDate(rs.getTimestamp("confirmationDate").toLocalDateTime());
+                obj.setCryptoType(rs.getString("cryptoType"));
+                list.add(obj);
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
 }
