@@ -8,19 +8,21 @@ import java.util.logging.SimpleFormatter;
 public class Floger {
     private static final Logger logger = Logger.getLogger(Floger.class.getName());
     private static FileHandler fh;
-    public static Logger makelogger () {
+    static {
         try {
-            // Configure FileHandler to log to "MyLogFile.log"
-            // true indicates append mode, so new logs are added to the end of the file
-            fh = new FileHandler("MyLogFile.log", true);
-            logger.addHandler(fh);
-            SimpleFormatter formatter = new SimpleFormatter();
-            fh.setFormatter(formatter);
-            return logger;
-        } catch (SecurityException | IOException e) {
+            if (fh == null) {
+                fh = new FileHandler("MyLogFile.log", true); // append mode
+                fh.setFormatter(new SimpleFormatter());
+                logger.addHandler(fh);
+                logger.setUseParentHandlers(false); // stop logging to console
+            }
+        } catch (IOException | SecurityException e) {
             e.printStackTrace();
-            return null;
         }
+    }
+
+    public static Logger makelogger() {
+        return logger;
     }
 
 }
