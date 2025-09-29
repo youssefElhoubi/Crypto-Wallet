@@ -3,6 +3,7 @@ package domain.services;
 import domain.entities.Transaction;
 import domain.repository.TransactionRepository;
 import utils.Floger;
+import utils.TransactionSummary;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,13 +17,14 @@ public class TransactionService {
         this.repo = repo;
     }
 
-    public void makeTransaction(Transaction t){
+    public void makeTransaction(Transaction t) {
         try {
             repo.Save(t);
-        }catch(Exception e){
+        } catch (Exception e) {
             log.warning(e.getMessage());
         }
     }
+
     public Transaction getTransactionById(UUID id) {
         try {
             return repo.FindById(id);
@@ -31,6 +33,7 @@ public class TransactionService {
             return null;
         }
     }
+
     public List<Transaction> getAllTransactions() {
         try {
             return repo.FindAll();
@@ -49,7 +52,7 @@ public class TransactionService {
             return false;
         }
     }
-    
+
     public boolean updateTransaction(Transaction tx) {
         try {
             repo.Update(tx);
@@ -60,6 +63,12 @@ public class TransactionService {
         }
     }
 
-
-
+    public List<TransactionSummary> feeCompaire() throws Exception {
+        try {
+            return repo.getTransactionSummaries();
+        } catch (Exception e) {
+            log.warning("Failed to fetch transaction summaries: " + e.getMessage());
+            throw new Exception("Failed to fetch transaction summaries: " + e.getMessage());
+        }
+    }
 }

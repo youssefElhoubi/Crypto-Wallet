@@ -8,8 +8,10 @@ import domain.repository.TransactionRepository;
 import domain.services.TransactionService;
 import domain.services.WalletService;
 import utils.Floger;
+import utils.TransactionSummary;
 import utils.WalletValidator;
 
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -39,6 +41,14 @@ public class TransactionController {
             System.out.println("your transaction have been created successfully");
         }catch(Exception e){
             log.warning("Failed to handle transaction creation"+e.getMessage());
+        }
+    }
+    public static void compairFee () throws Exception {
+        try {
+            List<TransactionSummary> transactionSummaries = new TransactionService(new TransactionRepository()).feeCompaire();
+            Menu.printTransactionSummaries(transactionSummaries);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

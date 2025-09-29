@@ -1,4 +1,5 @@
 import UI.Menu;
+import controller.MempoolController;
 import controller.TransactionController;
 import controller.WalletController;
 import domain.entities.Mempool;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         int choice;
         Scanner sc = new Scanner(System.in);
         Thread mempoolThread = new Thread(new MempoolService());
@@ -31,8 +32,10 @@ public class Main {
                 case 3:
                     System.out.println("please enter your wallet address:");
                     String address  = sc.nextLine() ;
+                    MempoolController.posetioInMempool(address);
                     break;
                 case 4:
+                    TransactionController.compairFee();
                     break;
                 case 5:
                     break;

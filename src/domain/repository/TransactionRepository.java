@@ -3,6 +3,7 @@ package domain.repository;
 import domain.entities.Transaction;
 import domain.enums.FeeLevel;
 import domain.enums.TransactionStatus;
+import utils.TransactionSummary;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -145,5 +146,30 @@ public class TransactionRepository extends Repository<Transaction> {
         }
         return list;
     }
+    public List<TransactionSummary> getTransactionSummaries() {
+        List<TransactionSummary> list = new ArrayList<>();
 
+        String sql = "SELECT feeLevel AS priority, " +
+                "COUNT(*) AS Position, " +
+                "SUM(fee) AS fees, " +
+                "SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND, creationDate, passTime))) AS total_pass_time " +
+                "FROM Transactions GROUP BY feeLevel;";
+
+        try (PreparedStatement stm = Instance.prepareStatement(sql)) {
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                TransactionSummary summary = new TransactionSummary();
+                summary.setPriority(rs.getString("priority"));
+                summary.setPosition(rs.getInt("Position"));
+                summary.setFees(rs.getDouble("fees"));
+                summary.setTotalPassTime(rs.getString("total_pass_time"));
+
+                list.add(summary);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching transaction summaries", e);
+        }
+
+        return list;
+    }
 }

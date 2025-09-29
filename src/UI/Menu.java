@@ -6,6 +6,7 @@ import domain.enums.FeeLevel;
 import domain.enums.TransactionStatus;
 import domain.services.FeeCalculator;
 import domain.services.MempoolService;
+import utils.TransactionSummary;
 import utils.Validator;
 
 import java.time.LocalDateTime;
@@ -131,5 +132,24 @@ public class Menu {
         }
 
         System.out.println(bottom);
+    }
+    public static void printTransactionSummaries(List<TransactionSummary> summaries) {
+        if (summaries == null || summaries.isEmpty()) {
+            System.out.println("⚠️ No transaction summaries found.");
+            return;
+        }
+
+        // Table header
+        System.out.printf("%-15s %-10s %-10s %-15s%n", "Priority", "Position", "Fees", "Total Pass Time");
+        System.out.println("------------------------------------------------------------");
+
+        // Table rows
+        for (TransactionSummary summary : summaries) {
+            System.out.printf("%-15s %-10d %-10.2f %-15s%n",
+                    summary.getPriority(),
+                    summary.getPosition(),
+                    summary.getFees(),
+                    summary.getTotalPassTime());
+        }
     }
 }
