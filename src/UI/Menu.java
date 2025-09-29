@@ -131,6 +131,7 @@ public class Menu {
 
         System.out.println(bottom);
     }
+
     public static void printTransactionSummaries(List<TransactionSummary> summaries) {
         if (summaries == null || summaries.isEmpty()) {
             System.out.println("⚠️ No transaction summaries found.");
@@ -150,4 +151,38 @@ public class Menu {
                     summary.getTotalPassTime());
         }
     }
+
+    public static void memPoolStatus() {
+        try {
+            List<Transaction> sortedTransactions = new MempoolService().mempoolStatus();
+
+            // Print header
+            System.out.printf(
+                    " %-36s | %-34s | %-34s | %-8s | %-12s | %-8s | %-20s | %-20s | %-8s | %-20s%n",
+                    "ID", "Source Address", "Destination Address", "Amount", "Fee", "FeeLevel", "Status", "Creation Date", "Crypto", "PassTime"
+            );
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+            // Print rows
+            sortedTransactions.forEach(t -> {
+                System.out.printf(
+                        " %-36s | %-34s | %-34s | %-8.2f | %-12.10f | %-8s | %-20s | %-20s | %-8s | %-20s%n",
+                        t.getId(),
+                        t.getSourceAddress(),
+                        t.getDestinationAddress(),
+                        t.getAmount(),
+                        t.getFee(),
+                        t.getFeeLevel(),
+                        t.getStatus(),
+                        t.getCreationDate(),
+                        t.getCryptoType(),
+                        t.getPassTime()
+                );
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

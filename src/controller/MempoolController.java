@@ -13,4 +13,11 @@ public class MempoolController {
             e.printStackTrace();
         }
     }
+    public static void mempooleStatuc(){
+        try {
+            Menu.memPoolStatus();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -179,4 +179,34 @@ public class TransactionRepository extends Repository<Transaction> {
 
         return list;
     }
+    public List<Transaction> memPooleStatus(){
+        String sql = "SELECT * FROM Transactions ORDER BY feeLevel";
+        List<Transaction> list = new ArrayList<>();
+        try(PreparedStatement stm = Instance.prepareStatement(sql)) {
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Transaction obj = new Transaction();
+                obj.setId(rs.getString("ID"));
+                obj.setSourceAddress(rs.getString("sourceAddress"));
+                obj.setDestinationAddress(rs.getString("destinationAddress"));
+                obj.setAmount(rs.getDouble("amount"));
+                obj.setFee(rs.getDouble("fee"));
+                obj.setFeeLevel(FeeLevel.valueOf(rs.getString("feeLevel")));
+                obj.setStatus(TransactionStatus.valueOf(rs.getString("transaction_status")));
+                obj.setCreationDate(rs.getTimestamp("creationDate").toLocalDateTime());
+                Timestamp confirmationTs = rs.getTimestamp("confirmationDate");
+                if (confirmationTs != null) {
+                    obj.setConfirmationDate(confirmationTs.toLocalDateTime());
+                } else {
+                    obj.setConfirmationDate(null); // keep it null in your object
+                }
+                obj.setCryptoType(rs.getString("cryptoType"));
+                list.add(obj);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

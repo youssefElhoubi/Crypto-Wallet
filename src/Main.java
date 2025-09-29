@@ -36,6 +36,7 @@ public class Main {
                     TransactionController.compairFee();
                     break;
                 case 5:
+                    MempoolController.mempooleStatuc();
                     break;
                 default:
                     return;

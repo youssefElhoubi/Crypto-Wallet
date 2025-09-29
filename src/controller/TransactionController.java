@@ -48,6 +48,7 @@ public class TransactionController {
             List<TransactionSummary> transactionSummaries = new TransactionService(new TransactionRepository()).feeCompaire();
             Menu.printTransactionSummaries(transactionSummaries);
         } catch (Exception e) {
+            log.warning("Failed to compair fee "+e.getMessage());
             e.printStackTrace();
         }
     }

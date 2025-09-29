@@ -80,4 +80,11 @@ public class MempoolService extends Thread {
             throw new RuntimeException("transaction balance is not enough");
         }
     }
+    public List<Transaction> mempoolStatus() throws Exception{
+        try {
+            return this.transactionRepo.memPooleStatus();
+        } catch (Exception e) {
+            throw new Exception("transaction balance is not enough" + e.getMessage());
+        }
+    }
 }
