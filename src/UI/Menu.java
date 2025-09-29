@@ -44,13 +44,13 @@ public class Menu {
         System.out.println("\n=== Enter wallet address");
     }
 
-    public static Transaction createTransactionFromUserInput(CryptoType CT, String sender, String resever) {
+    public static Transaction createTransactionFromUserInput(CryptoType ct, String sender, String resever) {
         System.out.println("=== Create New Transaction ===");
 
         UUID id = UUID.randomUUID(); // auto-generated
 
         // Crypto type
-        String cryptoType = CT.toString();
+        String cryptoType = ct.toString();
 
         String sourceAddress = sender;
 
@@ -89,21 +89,20 @@ public class Menu {
 
         // Dates
         LocalDateTime creationDate = LocalDateTime.now();
-        LocalDateTime confirmationDate = (status == TransactionStatus.CONFIRMED) ? LocalDateTime.now() : null;
         LocalDateTime passTime = LocalDateTime.now();
         switch (feeLevel) {
             case ECONOMIQUE:
-                passTime.plusMinutes(5);
+                passTime = passTime.plusMinutes(5);
                 break;
             case STANDARD:
-                passTime.plusMinutes(2);
+                passTime = passTime.plusMinutes(2);
                 break;
             case RAPIDE:
-                passTime.plusMinutes(1);
+                passTime = passTime.plusMinutes(1);
                 break;
         }
         // Build Transaction
-        return new Transaction(id, fee, sourceAddress, destinationAddress, amount, feeLevel, status, creationDate, confirmationDate, cryptoType, passTime);
+        return new Transaction(id, fee, sourceAddress, destinationAddress, amount, feeLevel, status, creationDate, null, cryptoType, passTime);
     }
 
     public static void placeInMempool(String walletAddress) {
