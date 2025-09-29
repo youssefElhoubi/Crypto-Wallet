@@ -8,7 +8,7 @@ import domain.repository.WalletRepository;
 import utils.Floger;
 import utils.ValidateTransacsion;
 
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -43,12 +43,13 @@ public class MempoolService extends Thread {
                 Wallet receiverWallet = this.walletRepo.getWalletByAddress(firstTransaction.getDestinationAddress());
 
                 senderWallet.setBalance(senderWallet.getBalance() - firstTransaction.getFee());
-                receiverWallet.setBalance(receiverWallet.getBalance() + firstTransaction.getFee());
+                receiverWallet.setBalance(senderWallet.getBalance());
 
                 this.walletRepo.Update(receiverWallet);
                 this.walletRepo.Update(senderWallet);
 
                 firstTransaction.setStatus(TransactionStatus.CONFIRMED);
+                firstTransaction.setConfirmationDate(LocalDateTime.now());
                 transactionRepo.Update(firstTransaction);
 
                 Thread.sleep(1000);

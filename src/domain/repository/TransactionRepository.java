@@ -8,6 +8,7 @@ import utils.TransactionSummary;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -124,7 +125,7 @@ public class TransactionRepository extends Repository<Transaction> {
 
     public List<Transaction> watingTransactions(){
         List<Transaction> list = new ArrayList<>();
-        String sql = Select + "   Transactions WHERE transaction_status = 'PENDING' ORDER BY feeLevel, passTime;";
+        String sql =  "select * from  Transactions WHERE transaction_status = 'PENDING' ORDER BY feeLevel, passTime and passTime > CURRENT_TIMESTAMP ;";
         try(PreparedStatement stm = Instance.prepareStatement(sql)){
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -137,11 +138,17 @@ public class TransactionRepository extends Repository<Transaction> {
                 obj.setFeeLevel(FeeLevel.valueOf(rs.getString("feeLevel")));
                 obj.setStatus(TransactionStatus.valueOf(rs.getString("transaction_status")));
                 obj.setCreationDate(rs.getTimestamp("creationDate").toLocalDateTime());
-                obj.setConfirmationDate(rs.getTimestamp("confirmationDate").toLocalDateTime());
+                Timestamp confirmationTs = rs.getTimestamp("confirmationDate");
+                if (confirmationTs != null) {
+                    obj.setConfirmationDate(confirmationTs.toLocalDateTime());
+                } else {
+                    obj.setConfirmationDate(null); // keep it null in your object
+                }
                 obj.setCryptoType(rs.getString("cryptoType"));
                 list.add(obj);
             }
         }catch (SQLException e){
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
         return list;

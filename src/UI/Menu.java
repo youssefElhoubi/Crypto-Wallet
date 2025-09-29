@@ -108,7 +108,6 @@ public class Menu {
 
     public static void placeInMempool(String walletAddress) {
         List<Transaction> pendingTransactions = new MempoolService().mempoolList();
-
         String top = "┌──────────────────────────────────┬────────┐";
         String header = "│ Transaction (autres utilisateurs) │ Frais  │";
         String separator = "├──────────────────────────────────┼────────┤";
@@ -122,7 +121,7 @@ public class Menu {
             String shortAddr = address.length() > 8 ? address.substring(0, 8) + "..." : address;
 
             String label;
-            if (tx.getId().toString().equals(walletAddress)) {
+            if (tx.getSourceAddress().toString().equals(walletAddress)) {
                 label = ">>> VOTRE TX: " + shortAddr;
             } else {
                 label = shortAddr + " (anonyme)";

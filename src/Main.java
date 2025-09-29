@@ -2,7 +2,6 @@ import UI.Menu;
 import controller.MempoolController;
 import controller.TransactionController;
 import controller.WalletController;
-import domain.entities.Mempool;
 import domain.services.MempoolService;
 import utils.Validator;
 
@@ -27,7 +26,6 @@ public class Main {
                     break;
                 case 2:
                     TransactionController.handleTransactionCreation();
-
                     break;
                 case 3:
                     System.out.println("please enter your wallet address:");
